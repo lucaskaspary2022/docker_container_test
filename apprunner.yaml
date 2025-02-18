@@ -1,0 +1,18 @@
+version: 1.0
+runtime: python3  # Temporary workaround, we will use a custom command
+build:
+  commands:
+    - flutter build web  # Build the Flutter web app
+run:
+  command: |
+    docker build -t docker_app . &&
+    docker run -p 80:80 docker_app
+  network:
+    port: 80
+healthcheck:
+  protocol: HTTP
+  path: /health
+  interval: 10
+  timeout: 5
+  healthy_threshold: 1
+  unhealthy_threshold: 5
